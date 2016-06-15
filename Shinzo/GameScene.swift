@@ -14,8 +14,10 @@ class GameScene: SKScene {
     var board: Board!
     var numberOfColoursToWin: Int!
     var numberOfColours: Int!
+    var level: Int!
     var movesLabel = SKLabelNode(fontNamed: "Thonburi")
     var timerLabel = SKLabelNode(fontNamed: "Thonburi")
+    var inPlay = true
     
     var moves: Int = 0 {
         didSet {
@@ -37,11 +39,12 @@ class GameScene: SKScene {
         }
     }
     
-    init(size: CGSize, cameFromScene: SKScene, boardConfig: String, numberOfColours: Int, numberOfColoursToWin: Int) {
+    init(size: CGSize, cameFromScene: SKScene, boardConfig: String, level: Int, numberOfColours: Int, numberOfColoursToWin: Int) {
         previousScene = cameFromScene
         super.init(size: size)
         self.numberOfColoursToWin = numberOfColoursToWin
         self.numberOfColours = numberOfColours
+        self.level = level
         board = Board(config: boardConfig, numColours: numberOfColours)
     }
     
@@ -120,6 +123,10 @@ class GameScene: SKScene {
     
     func expandTile(tile: Tile) {
         tile.runAction(SKAction.scaleBy(4, duration: 0.25))
+    }
+    
+    func shrinkTile(tile: Tile) {
+        tile.runAction(SKAction.scaleBy(0.25, duration: 0.25))
     }
     
     func addTopBar() {
@@ -213,7 +220,7 @@ class GameScene: SKScene {
         let block = SKAction.runBlock({
                 self.timerValue += 0.1
             })
-        let sequence = SKAction.sequence([wait,block])
+        let sequence = SKAction.sequence([wait, block])
         
         runAction(SKAction.repeatActionForever(sequence), withKey: "timer")
     }
@@ -223,19 +230,22 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        for touch in touches {
-            let location = touch.locationInNode(self)
-            let node = self.nodeAtPoint(location)
-            
-            if let name = node.name {
-                if name == "back" {
-                    quitGame()
-                }
-                else if name == "tile" {
-                    let touchedTile = node as! Tile
-                    dealWithTouchedTile(touchedTile)
+        if inPlay {
+            for touch in touches {
+                let location = touch.locationInNode(self)
+                let node = self.nodeAtPoint(location)
+                
+                if let name = node.name {
+                    if name == "back" {
+                        quitGame()
+                    }
+                    else if name == "tile" {
+                        let touchedTile = node as! Tile
+                        dealWithTouchedTile(touchedTile)
+                    }
                 }
             }
+
         }
     }
     
@@ -286,13 +296,24 @@ class GameScene: SKScene {
     }
     
     func showGameOver() {
+        inPlay = false
+        let wait1 = SKAction.waitForDuration(0.5)
+        let wait2 = SKAction.waitForDuration(0.35)
+        let shrinkTiles = SKAction.runBlock() {
+            for row in self.board.tiles {
+                for tile in row {
+                    tile.shrink()
+                }
+            }
+        }
         let gameOverAction = SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-            let gameOverScene = GameOverScene(size: self.size, moves: self.moves, time: self.timerValue, boardType: self.board.config)
+            let gameOverScene = GameOverScene(size: self.size, moves: self.moves, time: self.timerValue, boardType: self.board.config, level: self.level)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
         
-        self.runAction(gameOverAction)
+        let sequence = SKAction.sequence([wait1, shrinkTiles, wait2, gameOverAction])
+        self.runAction(sequence)
         
     }
     

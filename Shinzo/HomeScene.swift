@@ -10,8 +10,7 @@ import Foundation
 import SpriteKit
 
 class HomeScene: SKScene {
-    let defaults = NSUserDefaults.standardUserDefaults()
-    
+    let levelNames = ["3-2", "4-3", "4-2", "3-1", "4-1"]
     
     var buttonYOffset: CGFloat {
         return self.frame.height / 7
@@ -44,7 +43,6 @@ class HomeScene: SKScene {
     
     func addButtons() {
         let texts = ["Peaceful pond", "Babbling brook", "Surging stream", "Raging river", "Stormy sea"]
-        let names = ["3-2", "4-3", "4-2", "3-1", "4-1"]
         let colours = [SKColor.init(red: 0, green: 255, blue: 100, alpha: 1),
                        SKColor.init(red: 0, green: 255, blue: 0, alpha: 1),
                        SKColor.init(red: 255, green: 0, blue: 255, alpha: 1),
@@ -52,7 +50,7 @@ class HomeScene: SKScene {
                        SKColor.init(red: 255, green: 0, blue: 0, alpha: 1)]
         
         for i in 0 ..< texts.count {
-            let button = createButtonNumber(i, text: texts[i], name: names[i], colour: colours[i])
+            let button = createButtonNumber(i, text: texts[i], name: levelNames[i], colour: colours[i])
             addButtonNumber(i, button: button)
         }
         
@@ -77,19 +75,50 @@ class HomeScene: SKScene {
     
     func addLabels(numLabels: Int) {
         for i in 0 ..< numLabels {
-            let label = createLabel()
+            let label = createLabel(i + 1)
             addLabelNumber(i, label: label)
         }
     }
     
-    func createLabel() -> SKLabelNode {
+    func createLabel(level: Int) -> SKLabelNode {
         let label = SKLabelNode(fontNamed: "Thonburi")
         label.fontSize = 20
-        label.fontColor = SKColor.blackColor()
+        label.fontColor = SKColor.grayColor()
         label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Right
-        label.text = "0 / 9"
+        
+        let score = numberOfThreeStarsForLevel(level)
+        if score > 0 {
+            label.fontColor = SKColor.yellowColor()
+        }
+        if score == 9 {
+            label.fontSize = 25
+        }
+        label.text = "\(score) / 9"
         
         return label
+    }
+    
+    func numberOfThreeStarsForLevel(level: Int) -> Int {
+        let boardTypes = [
+            BoardConfig.easyDiagonal,
+            BoardConfig.mediumDiagonal,
+            BoardConfig.hardDiagonal,
+            BoardConfig.easyStraight,
+            BoardConfig.mediumStraight,
+            BoardConfig.hardStraight,
+            BoardConfig.easyAround,
+            BoardConfig.mediumAround,
+            BoardConfig.hardAround]
+        
+        var result = 0
+        
+        for boardType in boardTypes {
+            if Data.bestIsThreeStarsFor(boardType, level: level) {
+                result += 1
+            }
+        }
+        
+        return result
     }
     
     func addLabelNumber(labelNumber: Int, label: SKLabelNode) {
@@ -192,12 +221,16 @@ class HomeScene: SKScene {
             if let name = node.name {
                 let gameSelectAction = SKAction.runBlock() {
                     let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                    let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name)
+                    let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name, level: self.levelFrom(name))
                     self.view?.presentScene(selectGameScene, transition: reveal)
                 }
                 
                 self.runAction(gameSelectAction)
             }
         }
+    }
+    
+    func levelFrom(name: String) -> Int {
+        return levelNames.indexOf(name)! + 1
     }
 }

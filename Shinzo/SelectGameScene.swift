@@ -13,6 +13,7 @@ class SelectGameScene: SKScene {
     
     let previousScene: SKScene!
     var gameType: String!
+    var level: Int!
     
     var yOffset: CGFloat {
         return self.frame.height / 7
@@ -26,10 +27,11 @@ class SelectGameScene: SKScene {
         return size.height / 2
     }
     
-    init(size: CGSize, cameFromScene: SKScene, gameType: String) {
+    init(size: CGSize, cameFromScene: SKScene, gameType: String, level: Int) {
         previousScene = cameFromScene
         super.init(size: size)
         self.gameType = gameType
+        self.level = level
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -90,7 +92,55 @@ class SelectGameScene: SKScene {
             levelButton.position = positions[i - 1]
             
             self.addChild(levelButton)
+            
+            let starsLabel = createStarsLabel(i)
+            starsLabel.position = CGPoint(x: positions[i - 1].x, y: positions[i - 1].y - 55)
+            self.addChild(starsLabel)
         }
+    }
+    
+    func createStarsLabel(labelNum: Int) -> SKLabelNode {
+        let label = SKLabelNode(fontNamed: "Thonburi")
+        let numOfStars = numberOfStarsForLabelNum(labelNum)
+        label.text = createStarsText(numOfStars)
+        
+        if numOfStars == 3 {
+            label.fontSize = 20
+        } else {
+            label.fontSize = 15
+        }
+        label.fontColor = SKColor.yellowColor()
+        
+        return label
+    }
+    
+    func numberOfStarsForLabelNum(labelNum: Int) -> Int {
+        let boardTypes = [
+            BoardConfig.easyStraight,
+            BoardConfig.mediumStraight,
+            BoardConfig.hardStraight,
+            BoardConfig.easyDiagonal,
+            BoardConfig.mediumDiagonal,
+            BoardConfig.hardDiagonal,
+            BoardConfig.easyAround,
+            BoardConfig.mediumAround,
+            BoardConfig.hardAround]
+
+        return Data.numStarsFor(boardTypes[labelNum - 1], level: level)
+    }
+    
+    func createStarsText(numStars: Int) -> String {
+        var stars = ""
+        var count = 0
+        for _ in 0 ..< numStars {
+            stars += "★ "
+            count += 1
+        }
+        
+        for _ in count ..< 3 {
+            stars += "☆ "
+        }
+        return stars
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -125,6 +175,7 @@ class SelectGameScene: SKScene {
                 size: self.size,
                 cameFromScene: self,
                 boardConfig: boardConfig,
+                level: self.level,
                 numberOfColours: numColours,
                 numberOfColoursToWin: numColoursToWin)
             self.view?.presentScene(gameStartScene, transition: reveal)

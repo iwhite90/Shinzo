@@ -10,18 +10,17 @@ import Foundation
 import SpriteKit
 
 class GameOverScene: SKScene {
-    let defaults = NSUserDefaults.standardUserDefaults()
     var newBestMoves = false
     var newBestTime = false
     var newBestStars = false
     
-    init(size: CGSize, moves: Int, time: Double, boardType: String) {
+    init(size: CGSize, moves: Int, time: Double, boardType: String, level: Int) {
         super.init(size: size)
         
         addBackground()
         
-        let numStars = calculateStars(moves, boardType: boardType)
-        saveScoreFor(boardType, moves: moves, time: time, stars: numStars)
+        let numStars = calculateStars(moves, boardType: boardType, level: level)
+        saveScoreFor(boardType, level: level, moves: moves, time: time, stars: numStars)
         
         addStars(numStars)
         addYouWonLabel()
@@ -29,17 +28,13 @@ class GameOverScene: SKScene {
         addTimeLabel(time)
     }
     
-    func saveScoreFor(boardType: String, moves: Int, time: Double, stars: Int) {
+    func saveScoreFor(boardType: String, level: Int, moves: Int, time: Double, stars: Int) {
         var bestMoves = moves
         var bestTime = time
         var bestStars = stars
         
-        if let previousBest = defaults.arrayForKey(boardType) {
-            let previousBestMoves: Int = previousBest[0] as! Int
-            let previousBestTime: Double = previousBest[1] as! Double
-            let previousBestStars: Int = previousBest[2] as! Int
-            print("Previous best moves = \(previousBestMoves), best time = \(previousBestTime), best stars = \(previousBestStars)")
-            
+        if Data.dataExistsFor(boardType, level: level) {
+            let (previousBestMoves, previousBestTime, previousBestStars) = Data.movesTimeAndStarsFor(boardType, level: level)
             if previousBestMoves <= bestMoves {
                 bestMoves = previousBestMoves
             } else {
@@ -50,14 +45,14 @@ class GameOverScene: SKScene {
             } else {
                 newBestTime = true
             }
-            if previousBestStars <= bestStars {
+            if previousBestStars >= bestStars {
                 bestStars = previousBestStars
             } else {
                 newBestStars = true
             }
         }
         
-        defaults.setObject([bestMoves, bestTime, bestStars], forKey: boardType)
+        Data.saveFor(boardType, level: level, moves: bestMoves, time: bestTime, stars: bestStars)
     }
     
     func addBackground() {
@@ -70,13 +65,13 @@ class GameOverScene: SKScene {
         self.addChild(background)
     }
     
-    func calculateStars(moves: Int, boardType: String) -> Int {
+    func calculateStars(moves: Int, boardType: String, level: Int) -> Int {
         if isEasyBoard(boardType) {
-            return calculateEasyStars(moves)
+            return calculateEasyStars(moves, level: level)
         } else if isMediumBoard(boardType) {
-            return calculateMediumStars(moves)
+            return calculateMediumStars(moves, level: level)
         } else {
-            return calculateHardStars(moves)
+            return calculateHardStars(moves, level: level)
         }
     }
     
@@ -104,36 +99,36 @@ class GameOverScene: SKScene {
         }
     }
     
-    func calculateEasyStars(moves: Int) -> Int {
-        if moves <= 5 {
+    func calculateEasyStars(moves: Int, level: Int) -> Int {
+        if moves <= 8 * level {
             return 3
-        } else if moves <= 10 {
+        } else if moves <= 10 * level {
             return 2
-        } else if moves <= 15 {
+        } else if moves <= 15 * level {
             return 1
         } else {
             return 0
         }
     }
     
-    func calculateMediumStars(moves: Int) -> Int {
-        if moves <= 15 {
+    func calculateMediumStars(moves: Int, level: Int) -> Int {
+        if moves <= 15 * level {
             return 3
-        } else if moves <= 25 {
+        } else if moves <= 25 * level {
             return 2
-        } else if moves <= 35 {
+        } else if moves <= 35 * level {
             return 1
         } else {
             return 0
         }
     }
     
-    func calculateHardStars(moves: Int) -> Int {
-        if moves <= 25 {
+    func calculateHardStars(moves: Int, level: Int) -> Int {
+        if moves <= 25 * level {
             return 3
-        } else if moves <= 40 {
+        } else if moves <= 40 * level {
             return 2
-        } else if moves <= 55 {
+        } else if moves <= 55 * level {
             return 1
         } else {
             return 0
@@ -166,7 +161,11 @@ class GameOverScene: SKScene {
     
     func addYouWonLabel() {
         let label = SKLabelNode(fontNamed: "Thonburi")
-        label.text = "Winner!"
+        if newBestTime {
+            label.text = "New best time!"
+        } else {
+            label.text = "Winner!"
+        }
         label.fontSize = 40
         label.fontColor = SKColor.yellowColor()
         label.position = CGPoint(x: size.width/2, y: size.height/2 + 50)

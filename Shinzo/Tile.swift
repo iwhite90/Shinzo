@@ -56,6 +56,11 @@ class Tile: SKSpriteNode {
         self.runAction(animation)
     }
     
+    func shrink() {
+        let animation = SKAction.scaleBy(0.01, duration: 0.3)
+        self.runAction(animation)
+    }
+    
     func incrementImageNum() {
         if imageNum == numColours - 1 {
             imageNum = 0
