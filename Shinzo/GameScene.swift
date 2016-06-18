@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import GoogleMobileAds
 
 class GameScene: SKScene {
     
@@ -15,6 +16,7 @@ class GameScene: SKScene {
     var numberOfColoursToWin: Int!
     var numberOfColours: Int!
     var level: Int!
+    var bannerView: GADBannerView!
     var movesLabel = SKLabelNode(fontNamed: "Thonburi")
     var timerLabel = SKLabelNode(fontNamed: "Thonburi")
     var inPlay = true
@@ -39,12 +41,13 @@ class GameScene: SKScene {
         }
     }
     
-    init(size: CGSize, cameFromScene: SKScene, boardConfig: String, level: Int, numberOfColours: Int, numberOfColoursToWin: Int) {
+    init(size: CGSize, cameFromScene: SKScene, boardConfig: String, level: Int, numberOfColours: Int, numberOfColoursToWin: Int, bannerView: GADBannerView) {
         previousScene = cameFromScene
         super.init(size: size)
         self.numberOfColoursToWin = numberOfColoursToWin
         self.numberOfColours = numberOfColours
         self.level = level
+        self.bannerView = bannerView
         board = Board(config: boardConfig, numColours: numberOfColours)
     }
     
@@ -308,7 +311,7 @@ class GameScene: SKScene {
         }
         let gameOverAction = SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-            let gameOverScene = GameOverScene(size: self.size, moves: self.moves, time: self.timerValue, boardType: self.board.config, level: self.level)
+            let gameOverScene = GameOverScene(size: self.size, moves: self.moves, time: self.timerValue, boardType: self.board.config, level: self.level, bannerView: self.bannerView)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
         

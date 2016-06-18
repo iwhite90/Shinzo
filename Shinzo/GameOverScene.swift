@@ -8,14 +8,17 @@
 
 import Foundation
 import SpriteKit
+import GoogleMobileAds
 
 class GameOverScene: SKScene {
+    var bannerView: GADBannerView!
     var newBestMoves = false
     var newBestTime = false
     var newBestStars = false
     
-    init(size: CGSize, moves: Int, time: Double, boardType: String, level: Int) {
+    init(size: CGSize, moves: Int, time: Double, boardType: String, level: Int, bannerView: GADBannerView) {
         super.init(size: size)
+        self.bannerView = bannerView
         
         addBackground()
         
@@ -197,8 +200,9 @@ class GameOverScene: SKScene {
         runAction(SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
             let scene = HomeScene(size: self.size)
+            scene.bannerView = self.bannerView
             self.view?.presentScene(scene, transition:reveal)
-            })
+        })
     }
     
     required init(coder aDecoder: NSCoder) {

@@ -8,12 +8,14 @@
 
 import Foundation
 import SpriteKit
+import GoogleMobileAds
 
 class SelectGameScene: SKScene {
     
     let previousScene: SKScene!
     var gameType: String!
     var level: Int!
+    var bannerView: GADBannerView!
     
     var yOffset: CGFloat {
         return self.frame.height / 7
@@ -27,11 +29,12 @@ class SelectGameScene: SKScene {
         return size.height / 2
     }
     
-    init(size: CGSize, cameFromScene: SKScene, gameType: String, level: Int) {
+    init(size: CGSize, cameFromScene: SKScene, gameType: String, level: Int, bannerView: GADBannerView) {
         previousScene = cameFromScene
         super.init(size: size)
         self.gameType = gameType
         self.level = level
+        self.bannerView = bannerView
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -43,6 +46,7 @@ class SelectGameScene: SKScene {
         addTopBar()
         addTitle()
         addLevelButtons()
+        Utils.showBannerIfHidden(bannerView)
     }
     
     func addBackground() {
@@ -81,9 +85,9 @@ class SelectGameScene: SKScene {
             BoardConfig.easyAround, BoardConfig.mediumAround, BoardConfig.hardAround]
         
         let positions = [
-            CGPoint(x: quarterX, y: midY + 50), CGPoint(x: quarterX * 2, y: midY + 25), CGPoint(x: quarterX * 3, y: midY + 50),
-            CGPoint(x: quarterX, y: midY - 50), CGPoint(x: quarterX * 2, y: midY - 75), CGPoint(x: quarterX * 3, y: midY - 50),
-            CGPoint(x: quarterX, y: midY - 150), CGPoint(x: quarterX * 2, y: midY - 175), CGPoint(x: quarterX * 3, y: midY - 150)]
+            CGPoint(x: quarterX, y: midY + 100), CGPoint(x: quarterX * 2, y: midY + 85), CGPoint(x: quarterX * 3, y: midY + 70),
+            CGPoint(x: quarterX, y: midY), CGPoint(x: quarterX * 2, y: midY - 15), CGPoint(x: quarterX * 3, y: midY - 30),
+            CGPoint(x: quarterX, y: midY - 100), CGPoint(x: quarterX * 2, y: midY - 115), CGPoint(x: quarterX * 3, y: midY - 130)]
         
         for i in 1 ... 9 {
             let levelButton = SKSpriteNode(imageNamed: "level\(i)open")
@@ -177,10 +181,12 @@ class SelectGameScene: SKScene {
                 boardConfig: boardConfig,
                 level: self.level,
                 numberOfColours: numColours,
-                numberOfColoursToWin: numColoursToWin)
+                numberOfColoursToWin: numColoursToWin,
+                bannerView: self.bannerView)
             self.view?.presentScene(gameStartScene, transition: reveal)
         }
         
+        Utils.hideBanner(bannerView)
         self.runAction(gameStartAction)
     }
     

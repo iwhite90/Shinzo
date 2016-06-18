@@ -7,9 +7,33 @@
 //
 
 import Foundation
+import GoogleMobileAds
 
 class Utils {
     static func defaultsKeyFor(boardType: String, level: Int) -> String {
         return "\(boardType)-level\(level)"
+    }
+    
+    static func showBanner(bannerView: GADBannerView, screenHeight: CGFloat) {
+        bannerView.hidden = false
+        let request = GADRequest()
+     //   request.testDevices = ["2077ef9a63d2b398840261c8221a0c9b"]
+        request.testDevices = ["2fe890f315d2ba56207ad407abaf630c"]
+        bannerView.loadRequest(request)
+        var bannerFrame = bannerView.frame
+        bannerFrame.origin.x = 0
+        bannerFrame.origin.y = screenHeight - bannerFrame.size.height
+        
+        bannerView.frame = bannerFrame
+    }
+    
+    static func hideBanner(bannerView: GADBannerView) {
+        bannerView.hidden = true
+    }
+    
+    static func showBannerIfHidden(bannerView: GADBannerView) {
+        if bannerView.hidden {
+            bannerView.hidden = false
+        }
     }
 }
