@@ -21,10 +21,10 @@ class GameViewController: UIViewController {
         // Create a banner ad and add it to the view hierarchy.
         bannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
         bannerView.hidden = true
-        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"// test ad
-       // bannerView.adUnitID = "ca-app-pub-2729774462696402/9351863773" // live ad
+       // bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"// test ad
+        bannerView.adUnitID = "ca-app-pub-2729774462696402/9351863773" // live ad
         bannerView.rootViewController = self
-        view.addSubview(bannerView)
+    //    view.addSubview(bannerView)
         
         let scene = HomeScene(size: view.bounds.size)
         // Configure the view.

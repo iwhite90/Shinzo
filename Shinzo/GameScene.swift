@@ -72,17 +72,48 @@ class GameScene: SKScene {
     }
     
     func setupBoard() {
-        board.width = self.frame.width / 7 * 5
-        board.offset = self.frame.width / 7
-        let totalTileWidth = board.width / CGFloat(board.cols)
+        board.width = boardWidth()
+        board.offsetX = boardOffsetX()
+        board.offsetY = boardOffsetY()
+        let totalTileWidth = getTotalTileWidth()
         
-        let backdrop = createBoardBackdrop(totalTileWidth, offset: board.offset, cols: board.cols, rows: board.rows)
+        let backdrop = createBoardBackdrop(totalTileWidth, offsetX: board.offsetX, offsetY: board.offsetY, cols: board.cols, rows: board.rows)
         self.addChild(backdrop)
         
         addTilesToBoard(totalTileWidth)
     }
     
-    func createBoardBackdrop(tileWidth: CGFloat, offset: CGFloat, cols: Int, rows: Int) -> SKShapeNode {
+    func boardWidth() -> CGFloat {
+        let ratio = self.frame.height / self.frame.width
+        
+        if ratio < 1.4 {
+            return self.frame.width / 7 * 4
+        } else if ratio < 1.6 {
+            return self.frame.width / 7 * 4.3
+        } else {
+            return self.frame.width / 7 * 5
+        }
+    }
+    
+    func boardOffsetX() -> CGFloat {
+        return (self.frame.width - board.width) / 2
+    }
+    
+    func boardOffsetY() -> CGFloat {
+        let ratio = self.frame.height / self.frame.width
+        
+        if ratio < 1.7 {
+            return self.frame.width / 7
+        } else {
+            return self.frame.width / 5
+        }
+    }
+    
+    func getTotalTileWidth() -> CGFloat {
+        return board.width / CGFloat(board.cols)
+    }
+    
+    func createBoardBackdrop(tileWidth: CGFloat, offsetX: CGFloat, offsetY: CGFloat, cols: Int, rows: Int) -> SKShapeNode {
         let backdropWidth = tileWidth * CGFloat(cols) + tileWidth / 10
         let backdropHeight = tileWidth * CGFloat(rows) + tileWidth / 10
         let backdrop = SKShapeNode(path: CGPathCreateWithRoundedRect(CGRectMake(0, 0, backdropWidth, backdropHeight), 4, 4, nil))
@@ -90,7 +121,7 @@ class GameScene: SKScene {
         backdrop.strokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         backdrop.fillColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         backdrop.zPosition = 0
-        backdrop.position = CGPoint(x: offset - tileWidth / 10, y: (offset * 2) - tileWidth / 10)
+        backdrop.position = CGPoint(x: offsetX - tileWidth / 10, y: (offsetY * 2) - tileWidth / 10)
         
         return backdrop
     }
@@ -118,8 +149,8 @@ class GameScene: SKScene {
     }
     
     func positionTile(tile: Tile, totalTileWidth: CGFloat) {
-        tile.position.x = board.offset + (totalTileWidth * CGFloat(tile.x)) + (tile.size.width / 2)
-        tile.position.y = (board.offset * 2) + (totalTileWidth * CGFloat(tile.y) + (tile.size.width / 2))
+        tile.position.x = board.offsetX + (totalTileWidth * CGFloat(tile.x)) + (tile.size.width / 2)
+        tile.position.y = (board.offsetY * 2) + (totalTileWidth * CGFloat(tile.y) + (tile.size.width / 2))
         tile.zPosition = 1
         tile.setScale(0.25)
     }
@@ -162,7 +193,7 @@ class GameScene: SKScene {
     func setupMovesWord() {
         let movesWord = SKLabelNode(fontNamed: "Thonburi")
         movesWord.fontSize = CGFloat(20)
-        movesWord.position.x = board.offset * 2
+        movesWord.position.x = board.offsetX * 2
         movesWord.position.y = self.frame.height - (self.frame.height / 17)
         movesWord.text = "Moves:"
         
@@ -171,7 +202,7 @@ class GameScene: SKScene {
     
     func setupMovesLabel() {
         movesLabel.fontSize = CGFloat(20)
-        movesLabel.position.x = board.offset * 2 + 45
+        movesLabel.position.x = board.offsetX * 2 + 45
         movesLabel.position.y = self.frame.height - (self.frame.height / 17)
         movesLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
         movesLabel.text = "0"
@@ -192,7 +223,7 @@ class GameScene: SKScene {
     
     func setupColoursLabel() {
         let spriteWidth = (board.width / CGFloat(8)) * 0.75
-        let spriteYPosition = board.offset
+        let spriteYPosition = board.offsetY
         let startX = self.frame.width / 2 - (board.width / CGFloat(8)) * 2
         let colourNode = Labels.colourOrderNode(spriteWidth, numTiles: self.numberOfColours)
         

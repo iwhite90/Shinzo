@@ -30,7 +30,8 @@ struct SurroundType {
 class Board {
     var tiles: [[Tile]] = [[Tile]]()
     var width: CGFloat = 0
-    var offset: CGFloat = 0
+    var offsetX: CGFloat = 0
+    var offsetY: CGFloat = 0
     var cols: Int!
     var rows: Int!
     var surroundType: Int!

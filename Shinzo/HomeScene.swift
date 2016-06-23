@@ -43,7 +43,6 @@ class HomeScene: SKScene {
     func addInteractiveElements() {
         addButtons()
         addLabels(5)
-    //    addPadlocks()
     }
     
     func addButtons() {
@@ -129,16 +128,6 @@ class HomeScene: SKScene {
     func addLabelNumber(labelNumber: Int, label: SKLabelNode) {
         label.position = CGPoint(x: self.frame.width - 40, y: self.frame.height - buttonYOffset * CGFloat(2 + labelNumber))
         self.addChild(label)
-    }
-    
-    func addPadlocks() {
-        for i in 0 ..< 4 {
-            let padlock = SKSpriteNode(imageNamed: "padlock")
-            padlock.position = CGPoint(x: self.frame.width - 35, y: self.frame.height - buttonYOffset * CGFloat(3 + i) - 3)
-            padlock.anchorPoint = .zero
-            padlock.alpha = 0.6
-            self.addChild(padlock)
-        }
     }
     
     func addTitle() {
