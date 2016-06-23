@@ -20,6 +20,7 @@ class GameScene: SKScene {
     var movesLabel = SKLabelNode(fontNamed: "Thonburi")
     var timerLabel = SKLabelNode(fontNamed: "Thonburi")
     var inPlay = true
+    var scaleFactor: CGFloat = 1
     
     var moves: Int = 0 {
         didSet {
@@ -56,9 +57,18 @@ class GameScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
+        setScaleFactor()
         addBackground()
         setupBoard()
         addTopBar()
+    }
+    
+    func setScaleFactor() {
+        if self.frame.height / self.frame.width < 1.4 {
+            scaleFactor = 2
+        } else if self.frame.height / self.frame.width < 1.6 {
+            scaleFactor = 0.8
+        }
     }
     
     func addBackground() {
@@ -166,7 +176,7 @@ class GameScene: SKScene {
     func addTopBar() {
         addTopBarBackdrop()
         setupLabels()
-        setupTimer()
+     //   setupTimer()
     }
     
     func addTopBarBackdrop() {
@@ -192,7 +202,7 @@ class GameScene: SKScene {
     
     func setupMovesWord() {
         let movesWord = SKLabelNode(fontNamed: "Thonburi")
-        movesWord.fontSize = CGFloat(20)
+        movesWord.fontSize = 20 * scaleFactor
         movesWord.position.x = board.offsetX * 2
         movesWord.position.y = self.frame.height - (self.frame.height / 17)
         movesWord.text = "Moves:"
@@ -201,8 +211,8 @@ class GameScene: SKScene {
     }
     
     func setupMovesLabel() {
-        movesLabel.fontSize = CGFloat(20)
-        movesLabel.position.x = board.offsetX * 2 + 45
+        movesLabel.fontSize = 20 * scaleFactor
+        movesLabel.position.x = board.offsetX * 2 + 45 * scaleFactor
         movesLabel.position.y = self.frame.height - (self.frame.height / 17)
         movesLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
         movesLabel.text = "0"
@@ -212,10 +222,10 @@ class GameScene: SKScene {
     
     func setupBackArrow() {
         let backArrow = SKLabelNode(fontNamed: "Thonburi")
-        backArrow.fontSize = CGFloat(30)
+        backArrow.fontSize = 30 * scaleFactor
         backArrow.text = "↩"
         backArrow.name = "back"
-        backArrow.position = CGPoint(x: 20, y: self.frame.height - self.frame.width / 12)
+        backArrow.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - self.frame.width / 12)
         
         self.addChild(backArrow)
  

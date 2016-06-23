@@ -12,6 +12,7 @@ import GoogleMobileAds
 
 class HomeScene: SKScene {
     var bannerView: GADBannerView!
+    var scaleFactor: CGFloat = 1
     
     let levelNames = ["3-2", "4-3", "4-2", "3-1", "4-1"]
     
@@ -24,10 +25,17 @@ class HomeScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
+        setScaleFactor()
         addBackground()
         addInteractiveElements()
         addTitle()
         Utils.showBanner(bannerView, screenHeight: self.frame.height)
+    }
+    
+    func setScaleFactor() {
+        if self.frame.height / self.frame.width < 1.4 {
+            scaleFactor = 2
+        }
     }
 
     
@@ -62,7 +70,7 @@ class HomeScene: SKScene {
     
     func createButtonNumber(buttonNumber: Int, text: String, name: String, colour: SKColor) -> SKLabelNode {
         let button = SKLabelNode(fontNamed: "Thonburi")
-        button.fontSize = 24
+        button.fontSize = 24 * scaleFactor
         button.fontColor = colour
         button.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
         button.text = text
@@ -72,7 +80,7 @@ class HomeScene: SKScene {
     }
     
     func addButtonNumber(buttonNumber: Int, button: SKLabelNode) {
-        button.position = CGPoint(x: 20, y: self.frame.height - buttonYOffset * CGFloat(2 + buttonNumber))
+        button.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - buttonYOffset * CGFloat(2 + buttonNumber))
         
         self.addChild(button)
     }
@@ -86,7 +94,7 @@ class HomeScene: SKScene {
     
     func createLabel(level: Int) -> SKLabelNode {
         let label = SKLabelNode(fontNamed: "Thonburi")
-        label.fontSize = 20
+        label.fontSize = 20 * scaleFactor
         label.fontColor = SKColor.grayColor()
         label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Right
         
@@ -95,7 +103,7 @@ class HomeScene: SKScene {
             label.fontColor = SKColor.yellowColor()
         }
         if score == 9 {
-            label.fontSize = 25
+            label.fontSize = 25 * scaleFactor
         }
         label.text = "\(score) / 9"
         
@@ -126,7 +134,7 @@ class HomeScene: SKScene {
     }
     
     func addLabelNumber(labelNumber: Int, label: SKLabelNode) {
-        label.position = CGPoint(x: self.frame.width - 40, y: self.frame.height - buttonYOffset * CGFloat(2 + labelNumber))
+        label.position = CGPoint(x: self.frame.width - 40 * scaleFactor, y: self.frame.height - buttonYOffset * CGFloat(2 + labelNumber))
         self.addChild(label)
     }
     
@@ -192,7 +200,7 @@ class HomeScene: SKScene {
     
     func createTitleLetter(letter: String) -> SKLabelNode {
         let letterLabel = SKLabelNode(fontNamed: "Thonburi")
-        letterLabel.fontSize = 25
+        letterLabel.fontSize = 25 * scaleFactor
         letterLabel.fontColor = SKColor.blackColor()
         letterLabel.text = letter
         letterLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center

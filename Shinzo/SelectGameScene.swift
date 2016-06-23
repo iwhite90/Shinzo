@@ -16,6 +16,7 @@ class SelectGameScene: SKScene {
     var gameType: String!
     var level: Int!
     var bannerView: GADBannerView!
+    var scaleFactor: CGFloat = 1
     
     var yOffset: CGFloat {
         return self.frame.height / 7
@@ -42,11 +43,20 @@ class SelectGameScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
+        setScaleFactor()
         addBackground()
         addTopBar()
         addTitle()
         addLevelButtons()
         Utils.showBannerIfHidden(bannerView)
+    }
+    
+    func setScaleFactor() {
+        if self.frame.height / self.frame.width < 1.4 {
+            scaleFactor = 2
+        } else if self.frame.height / self.frame.width < 1.6 {
+            scaleFactor = 0.8
+        }
     }
     
     func addBackground() {
@@ -61,10 +71,10 @@ class SelectGameScene: SKScene {
     
     func addTopBar() {
         let backArrow = SKLabelNode(fontNamed: "Thonburi")
-        backArrow.fontSize = CGFloat(30)
+        backArrow.fontSize = 30 * scaleFactor
         backArrow.text = "↩"
         backArrow.name = "back"
-        backArrow.position = CGPoint(x: 20, y: self.frame.height - self.frame.width / 12)
+        backArrow.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - self.frame.width / 12)
         
         self.addChild(backArrow)
 
@@ -72,7 +82,7 @@ class SelectGameScene: SKScene {
     
     func addTitle() {
         let titleImage = SKSpriteNode(imageNamed: gameType)
-        titleImage.setScale(0.75)
+        titleImage.setScale(0.75 * scaleFactor)
         titleImage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height - yOffset)
         
         self.addChild(titleImage)
@@ -85,20 +95,20 @@ class SelectGameScene: SKScene {
             BoardConfig.easyAround, BoardConfig.mediumAround, BoardConfig.hardAround]
         
         let positions = [
-            CGPoint(x: quarterX, y: midY + 100), CGPoint(x: quarterX * 2, y: midY + 85), CGPoint(x: quarterX * 3, y: midY + 70),
-            CGPoint(x: quarterX, y: midY), CGPoint(x: quarterX * 2, y: midY - 15), CGPoint(x: quarterX * 3, y: midY - 30),
-            CGPoint(x: quarterX, y: midY - 100), CGPoint(x: quarterX * 2, y: midY - 115), CGPoint(x: quarterX * 3, y: midY - 130)]
+            CGPoint(x: quarterX, y: midY + 100 * scaleFactor), CGPoint(x: quarterX * 2, y: midY + 85 * scaleFactor), CGPoint(x: quarterX * 3, y: midY + 70 * scaleFactor),
+            CGPoint(x: quarterX, y: midY), CGPoint(x: quarterX * 2, y: midY - 15 * scaleFactor), CGPoint(x: quarterX * 3, y: midY - 30 * scaleFactor),
+            CGPoint(x: quarterX, y: midY - 100 * scaleFactor), CGPoint(x: quarterX * 2, y: midY - 115 * scaleFactor), CGPoint(x: quarterX * 3, y: midY - 130 * scaleFactor)]
         
         for i in 1 ... 9 {
             let levelButton = SKSpriteNode(imageNamed: "level\(i)open")
             levelButton.name = levels[i - 1]
-            levelButton.setScale(0.5)
+            levelButton.setScale(0.5 * scaleFactor)
             levelButton.position = positions[i - 1]
             
             self.addChild(levelButton)
             
             let starsLabel = createStarsLabel(i)
-            starsLabel.position = CGPoint(x: positions[i - 1].x, y: positions[i - 1].y - 55)
+            starsLabel.position = CGPoint(x: positions[i - 1].x, y: positions[i - 1].y - 55 * scaleFactor)
             self.addChild(starsLabel)
         }
     }
@@ -109,9 +119,9 @@ class SelectGameScene: SKScene {
         label.text = createStarsText(numOfStars)
         
         if numOfStars == 3 {
-            label.fontSize = 20
+            label.fontSize = 20 * scaleFactor
         } else {
-            label.fontSize = 15
+            label.fontSize = 15 * scaleFactor
         }
         label.fontColor = SKColor.yellowColor()
         
