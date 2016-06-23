@@ -21,13 +21,28 @@ class GameScene: SKScene {
     var timerLabel = SKLabelNode(fontNamed: "Thonburi")
     var inPlay = true
     var scaleFactor: CGFloat = 1
+    var movesForThreeStars: Int!
+    var movesForTwoStars: Int!
+    var movesForOneStar: Int!
+    var starsLabel = SKLabelNode(fontNamed: "Thonburi")
+    let threeStarsText = "★ ★ ★"
+    let twoStarsText = "☆ ★ ★"
+    let oneStarText = "☆ ☆ ★"
+    let noStarsText = "☆ ☆ ☆"
     
     var moves: Int = 0 {
         didSet {
-            if moves < 1000 {
-                movesLabel.text = "\(moves)"
+            if moves > movesForOneStar {
+                starsLabel.text = noStarsText
+            } else if moves > movesForTwoStars {
+                starsLabel.text = oneStarText
+            } else if moves > movesForThreeStars {
+                starsLabel.text = twoStarsText
+            }
+            if moves <= movesForOneStar {
+                movesLabel.text = "\(movesForOneStar - moves)"
             } else {
-                movesLabel.text = "> 1k"
+                movesLabel.text = "-"
             }
         }
     }
@@ -50,6 +65,11 @@ class GameScene: SKScene {
         self.level = level
         self.bannerView = bannerView
         board = Board(config: boardConfig, numColours: numberOfColours)
+        
+        let (threeStars, twoStars, oneStar) = LevelMoves.movesForLevel(level, boardType: board.config)
+        self.movesForThreeStars = threeStars
+        self.movesForTwoStars = twoStars
+        self.movesForOneStar = oneStar
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -197,6 +217,7 @@ class GameScene: SKScene {
         setupMovesWord()
         setupMovesLabel()
         setupBackArrow()
+        setupStarsLabel()
         setupColoursLabel()
     }
     
@@ -215,7 +236,7 @@ class GameScene: SKScene {
         movesLabel.position.x = board.offsetX * 2 + 45 * scaleFactor
         movesLabel.position.y = self.frame.height - (self.frame.height / 17)
         movesLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-        movesLabel.text = "0"
+        movesLabel.text = "\(movesForOneStar)"
         
         self.addChild(movesLabel)
     }
@@ -228,7 +249,14 @@ class GameScene: SKScene {
         backArrow.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - self.frame.width / 12)
         
         self.addChild(backArrow)
- 
+    }
+    
+    func setupStarsLabel() {
+        starsLabel.fontSize = 30 * scaleFactor
+        starsLabel.fontColor = SKColor.yellowColor()
+        starsLabel.text = threeStarsText
+        starsLabel.position = CGPoint(x: size.width - 75 * scaleFactor, y: self.frame.height - (self.frame.height / 17))
+        self.addChild(starsLabel)
     }
     
     func setupColoursLabel() {

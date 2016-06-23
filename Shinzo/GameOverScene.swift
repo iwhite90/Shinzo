@@ -26,9 +26,9 @@ class GameOverScene: SKScene {
         saveScoreFor(boardType, level: level, moves: moves, time: time, stars: numStars)
         
         addStars(numStars)
-        addYouWonLabel()
+        addYouWonLabel(numStars)
         addMovesLabel(moves)
-        addTimeLabel(time)
+     //   addTimeLabel(time)
     }
     
     func saveScoreFor(boardType: String, level: Int, moves: Int, time: Double, stars: Int) {
@@ -69,69 +69,13 @@ class GameOverScene: SKScene {
     }
     
     func calculateStars(moves: Int, boardType: String, level: Int) -> Int {
-        if isEasyBoard(boardType) {
-            return calculateEasyStars(moves, level: level)
-        } else if isMediumBoard(boardType) {
-            return calculateMediumStars(moves, level: level)
-        } else {
-            return calculateHardStars(moves, level: level)
-        }
-    }
-    
-    func isEasyBoard(boardType: String) -> Bool {
-        if boardType == BoardConfig.easyAround || boardType == BoardConfig.easyDiagonal || boardType == BoardConfig.easyStraight {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func isMediumBoard(boardType: String) -> Bool {
-        if boardType == BoardConfig.mediumAround || boardType == BoardConfig.mediumDiagonal || boardType == BoardConfig.mediumStraight {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func isHardBoard(boardType: String) -> Bool {
-        if boardType == BoardConfig.hardAround || boardType == BoardConfig.hardDiagonal || boardType == BoardConfig.hardStraight {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func calculateEasyStars(moves: Int, level: Int) -> Int {
-        if moves <= 8 * level {
+        let (threeStars, twoStars, oneStar) = LevelMoves.movesForLevel(level, boardType: boardType)
+        
+        if moves <= threeStars {
             return 3
-        } else if moves <= 10 * level {
+        } else if moves <= twoStars {
             return 2
-        } else if moves <= 15 * level {
-            return 1
-        } else {
-            return 0
-        }
-    }
-    
-    func calculateMediumStars(moves: Int, level: Int) -> Int {
-        if moves <= 15 * level {
-            return 3
-        } else if moves <= 25 * level {
-            return 2
-        } else if moves <= 35 * level {
-            return 1
-        } else {
-            return 0
-        }
-    }
-    
-    func calculateHardStars(moves: Int, level: Int) -> Int {
-        if moves <= 25 * level {
-            return 3
-        } else if moves <= 40 * level {
-            return 2
-        } else if moves <= 55 * level {
+        } else if moves <= oneStar {
             return 1
         } else {
             return 0
@@ -141,9 +85,9 @@ class GameOverScene: SKScene {
     func addStars(numStars: Int) {
         let label = SKLabelNode(fontNamed: "Thonburi")
         label.text = createStarsText(numStars)
-        label.fontSize = 40
+        label.fontSize = 50
         label.fontColor = SKColor.yellowColor()
-        label.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
+        label.position = CGPoint(x: size.width / 2, y: size.height / 2 + 125)
         
         addChild(label)
     }
@@ -162,12 +106,17 @@ class GameOverScene: SKScene {
         return stars
     }
     
-    func addYouWonLabel() {
+    func addYouWonLabel(numStars: Int) {
         let label = SKLabelNode(fontNamed: "Thonburi")
-        if newBestTime {
-            label.text = "New best time!"
+        
+        if numStars == 3 {
+            label.text = "Brilliant!"
+        } else if numStars == 2 {
+            label.text = "Well done!"
+        } else if numStars == 1 {
+            label.text = "Not bad..."
         } else {
-            label.text = "Winner!"
+            label.text = "Try again"
         }
         label.fontSize = 40
         label.fontColor = SKColor.yellowColor()
