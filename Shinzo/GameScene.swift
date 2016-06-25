@@ -74,6 +74,7 @@ class GameScene: SKScene {
         setupBoard()
         addTopBar()
         addExplanationLabel()
+        displayCoachMark()
         Utils.createAndLoadInterstitial()
     }
     
@@ -317,6 +318,23 @@ class GameScene: SKScene {
         label.position = CGPoint(x: self.frame.width / 2, y: yPosition)
         
         self.addChild(label)
+    }
+    
+    func displayCoachMark() {
+        if !Utils.gameSceneCoachMarkSeen {
+            let alertController = UIAlertController(title: "How to play",
+                                                    message: "Tap a square to change it to the next colour in the sequence.\n\nThe squares around it will move to their next colours as well.\n\nWin by reducing the number of colours on the board.",
+                                                    preferredStyle: .Alert)
+            
+            let okAction = UIAlertAction(title:"Ok",
+                                         style: .Default) { (action) -> Void in
+                                            Utils.gameSceneCoachMarkSeen = true
+            }
+            alertController.addAction(okAction)
+            
+            Utils.rootVC.presentViewController(alertController, animated: true, completion: nil)
+        }
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

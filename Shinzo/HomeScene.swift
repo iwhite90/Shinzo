@@ -28,6 +28,7 @@ class HomeScene: SKScene {
         addBackground()
         addInteractiveElements()
         addTitle()
+        addHelpButton()
         Utils.showBanner(Ads.bannerView, screenHeight: self.frame.height)
     }
     
@@ -214,20 +215,56 @@ class HomeScene: SKScene {
         self.addChild(letter)
     }
     
+    func addHelpButton() {
+        let button = SKSpriteNode(imageNamed: "help-alpha")
+        button.anchorPoint = .zero
+        button.name = "help"
+        button.setScale(0.25 * scaleFactor)
+        button.zPosition = 2
+        button.position = CGPoint(x: self.frame.width - 50 * scaleFactor, y: self.frame.height - 35 * scaleFactor)
+        self.addChild(button)
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             let location = touch.locationInNode(self)
             let node = self.nodeAtPoint(location)
             
             if let name = node.name {
-                let gameSelectAction = SKAction.runBlock() {
-                    let reveal = SKTransition.crossFadeWithDuration(0.5)
-                    let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name, level: self.levelFrom(name))
-                    self.view?.presentScene(selectGameScene, transition: reveal)
+                if name == "help" {
+                    startCoachMarks()
+                } else {
+                    let gameSelectAction = SKAction.runBlock() {
+                        let reveal = SKTransition.crossFadeWithDuration(0.5)
+                        let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name, level: self.levelFrom(name))
+                        self.view?.presentScene(selectGameScene, transition: reveal)
+                    }
+                    
+                    self.runAction(gameSelectAction)
                 }
-                self.runAction(gameSelectAction)
             }
         }
+    }
+    
+    func startCoachMarks() {
+        Utils.selectGameSceneCoachMarkSeen = false
+        Utils.gameSceneCoachMarkSeen = false
+        displayCoachMark()
+    }
+    
+    func displayCoachMark() {
+        let alertController = UIAlertController(title: "Select a game",
+                                                message: "Lower games are harder.\n\nFor instance, Peaceful pond has a board with 3 colours which you need to get down to 2.\n\nStormy sea starts with 4 colours which you need to get down to just 1!",
+                                                preferredStyle: .Alert)
+            
+        let okAction = UIAlertAction(title:"Ok",
+                                     style: .Default) { (action) -> Void in
+                                        // Do nothing
+        }
+        alertController.addAction(okAction)
+            
+        Utils.rootVC.presentViewController(alertController, animated: true, completion: nil)
+
     }
     
     func levelFrom(name: String) -> Int {

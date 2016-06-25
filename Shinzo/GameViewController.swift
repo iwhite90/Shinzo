@@ -14,7 +14,8 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        Utils.rootVC = self
         let scene = HomeScene(size: view.bounds.size)
         // Configure the view.
         let skView = self.view as! SKView
@@ -36,7 +37,6 @@ class GameViewController: UIViewController {
         // Ads.bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"// test ad
         Ads.bannerView.adUnitID = "ca-app-pub-2729774462696402/9351863773" // live ad
         Ads.bannerView.rootViewController = self
-        Ads.rootVC = self
         Ads.gamesToShowInterstitial = Int(Random.random(min: 1, max: 4))
         
         view.addSubview(Ads.bannerView)

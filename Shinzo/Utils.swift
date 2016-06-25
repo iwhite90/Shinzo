@@ -10,6 +10,12 @@ import Foundation
 import GoogleMobileAds
 
 class Utils {
+    
+    static var rootVC: UIViewController!
+    
+    static var selectGameSceneCoachMarkSeen: Bool = true
+    static var gameSceneCoachMarkSeen: Bool = true
+    
     static func defaultsKeyFor(boardType: String, level: Int) -> String {
         return "\(boardType)-level\(level)"
     }
@@ -51,7 +57,7 @@ class Utils {
     
     static func presentIntersitial() {
         if Ads.interstitial.isReady {
-            Ads.interstitial.presentFromRootViewController(Ads.rootVC)
+            Ads.interstitial.presentFromRootViewController(rootVC)
         } else {
             print("Ad wasn't ready")
         }

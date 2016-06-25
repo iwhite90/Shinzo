@@ -13,7 +13,5 @@ struct Ads {
     static var bannerView: GADBannerView!    
     static var interstitial: GADInterstitial!
     
-    static var rootVC: UIViewController!
-    
     static var gamesToShowInterstitial: Int = 0
 }

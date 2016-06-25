@@ -47,6 +47,7 @@ class SelectGameScene: SKScene {
         addTitle()
         addLevelButtons()
         Utils.showBannerIfHidden(Ads.bannerView)
+        displayCoachMark()
     }
     
     func setScaleFactor() {
@@ -153,6 +154,22 @@ class SelectGameScene: SKScene {
             stars += "☆ "
         }
         return stars
+    }
+    
+    func displayCoachMark() {
+        if !Utils.selectGameSceneCoachMarkSeen {
+            let alertController = UIAlertController(title: "Select a level",
+                                                    message: "Red is harder than green.\n\nEach level of the same colour plays slightly differently.\n\nTry to get three stars in each!",
+                                                    preferredStyle: .Alert)
+            
+            let okAction = UIAlertAction(title:"Ok",
+                                         style: .Default) { (action) -> Void in
+                                            Utils.selectGameSceneCoachMarkSeen = true
+            }
+            alertController.addAction(okAction)
+            
+            Utils.rootVC.presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
