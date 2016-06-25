@@ -182,7 +182,7 @@ class GameOverScene: SKScene {
     func goToHomeScreen() {
         Utils.presentIntersitial()
         runAction(SKAction.runBlock() {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let reveal = SKTransition.crossFadeWithDuration(0.5)
             let scene = HomeScene(size: self.size)
             self.view?.presentScene(scene, transition:reveal)
         })
@@ -191,7 +191,7 @@ class GameOverScene: SKScene {
     func restartGame() {
         Utils.presentIntersitial()
         runAction(SKAction.runBlock() {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let reveal = SKTransition.doorsOpenVerticalWithDuration(0.5)
             let scene = GameScene(size: self.size, gameSceneConfig: self.gameSceneConfig)
             self.view?.presentScene(scene, transition: reveal)
         })

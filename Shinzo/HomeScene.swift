@@ -221,7 +221,7 @@ class HomeScene: SKScene {
             
             if let name = node.name {
                 let gameSelectAction = SKAction.runBlock() {
-                    let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                    let reveal = SKTransition.crossFadeWithDuration(0.5)
                     let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name, level: self.levelFrom(name))
                     self.view?.presentScene(selectGameScene, transition: reveal)
                 }

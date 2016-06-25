@@ -44,10 +44,8 @@ class Utils {
             let request = GADRequest()
             request.testDevices = [ kGADSimulatorID, "2fe890f315d2ba56207ad407abaf630c" ]
             Ads.interstitial.loadRequest(request)
-            print(Ads.gamesToShowInterstitial)
         } else {
             Ads.gamesToShowInterstitial -= 1
-            print(Ads.gamesToShowInterstitial)
         }
     }
     

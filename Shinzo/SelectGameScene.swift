@@ -172,7 +172,7 @@ class SelectGameScene: SKScene {
     
     func goToPreviousScreen() {
         let previousScreenAction = SKAction.runBlock() {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let reveal = SKTransition.crossFadeWithDuration(0.5)
             self.view?.presentScene(self.previousScene, transition: reveal)
         }
         
@@ -181,7 +181,7 @@ class SelectGameScene: SKScene {
     
     func startGame(boardConfig: String) {
         let gameStartAction = SKAction.runBlock() {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let reveal = SKTransition.doorsOpenVerticalWithDuration(0.5)
             let (numColours, numColoursToWin) = self.unpackGameType(self.gameType)
             let gameSceneConfig = GameSceneConfig(
                 goBackScene: self,

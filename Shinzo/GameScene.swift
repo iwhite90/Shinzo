@@ -73,6 +73,7 @@ class GameScene: SKScene {
         addBackground()
         setupBoard()
         addTopBar()
+        addExplanationLabel()
         Utils.createAndLoadInterstitial()
     }
     
@@ -294,6 +295,30 @@ class GameScene: SKScene {
         self.removeActionForKey("timer")
     }
     
+    func addExplanationLabel() {
+        let label = SKLabelNode(fontNamed: "Thonburi")
+        let numToEliminate = self.gameSceneConfig.numberOfColours - self.gameSceneConfig.numberOfColoursToWin
+        
+        if numToEliminate == 1 {
+            label.text = "Eliminate 1 colour"
+        } else {
+            label.text = "Eliminate \(numToEliminate) colours"
+        }
+        
+        label.fontSize = 20 * scaleFactor
+        label.fontColor = SKColor.yellowColor()
+        label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        
+        var yPosition = self.frame.height - (self.frame.height / 8)
+        if scaleFactor == 1 {
+            yPosition = self.frame.height - (self.frame.height / 7)
+        }
+        
+        label.position = CGPoint(x: self.frame.width / 2, y: yPosition)
+        
+        self.addChild(label)
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if inPlay {
             for touch in touches {
@@ -318,7 +343,7 @@ class GameScene: SKScene {
         stopTimer()
         
         let gameQuitAction = SKAction.runBlock() {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let reveal = SKTransition.doorsCloseVerticalWithDuration(0.5)
             self.view?.presentScene(self.gameSceneConfig.goBackScene, transition: reveal)
         }
         
@@ -372,7 +397,7 @@ class GameScene: SKScene {
             }
         }
         let gameOverAction = SKAction.runBlock() {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let reveal = SKTransition.crossFadeWithDuration(0.5)
             let gameOverScene = GameOverScene(
                 size: self.size,
                 gameSceneConfig: self.gameSceneConfig,
