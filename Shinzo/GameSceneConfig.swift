@@ -14,6 +14,7 @@ struct GameSceneConfig {
     var goBackScene: SKScene!
     var boardConfig: String!
     var level: Int!
+    var gameType: String!
     var numberOfColours: Int!
     var numberOfColoursToWin: Int!
 }

@@ -362,7 +362,7 @@ class GameScene: SKScene {
         
         let gameQuitAction = SKAction.runBlock() {
             let reveal = SKTransition.doorsCloseVerticalWithDuration(0.5)
-            self.view?.presentScene(self.gameSceneConfig.goBackScene, transition: reveal)
+            self.view?.presentScene(SelectGameScene(size: self.size, gameType: self.gameSceneConfig.gameType, level: self.gameSceneConfig.level), transition: reveal)
         }
         
         self.runAction(gameQuitAction)

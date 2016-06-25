@@ -12,7 +12,6 @@ import GoogleMobileAds
 
 class SelectGameScene: SKScene {
     
-    let previousScene: SKScene!
     var gameType: String!
     var level: Int!
     var scaleFactor: CGFloat = 1
@@ -29,8 +28,7 @@ class SelectGameScene: SKScene {
         return size.height / 2
     }
     
-    init(size: CGSize, cameFromScene: SKScene, gameType: String, level: Int) {
-        previousScene = cameFromScene
+    init(size: CGSize, gameType: String, level: Int) {
         super.init(size: size)
         self.gameType = gameType
         self.level = level
@@ -188,7 +186,7 @@ class SelectGameScene: SKScene {
     func goToPreviousScreen() {
         let previousScreenAction = SKAction.runBlock() {
             let reveal = SKTransition.crossFadeWithDuration(0.5)
-            self.view?.presentScene(self.previousScene, transition: reveal)
+            self.view?.presentScene(HomeScene(size: self.size), transition: reveal)
         }
         
         self.runAction(previousScreenAction)
@@ -202,6 +200,7 @@ class SelectGameScene: SKScene {
                 goBackScene: self,
                 boardConfig: boardConfig,
                 level: self.level,
+                gameType: self.gameType,
                 numberOfColours: numColours,
                 numberOfColoursToWin: numColoursToWin)
             

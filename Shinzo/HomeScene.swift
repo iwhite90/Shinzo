@@ -229,7 +229,7 @@ class HomeScene: SKScene {
                 } else {
                     let gameSelectAction = SKAction.runBlock() {
                         let reveal = SKTransition.crossFadeWithDuration(0.5)
-                        let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name, level: self.levelFrom(name))
+                        let selectGameScene = SelectGameScene(size: self.size, gameType: name, level: self.levelFrom(name))
                         self.view?.presentScene(selectGameScene, transition: reveal)
                     }
                     
