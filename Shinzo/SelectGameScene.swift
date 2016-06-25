@@ -76,17 +76,12 @@ class SelectGameScene: SKScene {
         backArrow.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - self.frame.width / 12)
         
         self.addChild(backArrow)
-
     }
     
     func addTitle() {
-        let title = SKLabelNode(fontNamed: "Thonburi")
-        title.fontSize = 35 * scaleFactor
-        title.fontColor = GameTitles.colours[self.level - 1]
-        title.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-        title.text = GameTitles.texts[self.level - 1]
+        let title = SKSpriteNode(imageNamed: "level\(level)title")
+        title.setScale(1.25 * scaleFactor)
         title.position = CGPoint(x: self.frame.width / 2, y: self.frame.height - yOffset)
-        
         self.addChild(title)
     }
     
