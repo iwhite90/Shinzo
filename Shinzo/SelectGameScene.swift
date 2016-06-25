@@ -80,11 +80,14 @@ class SelectGameScene: SKScene {
     }
     
     func addTitle() {
-        let titleImage = SKSpriteNode(imageNamed: gameType)
-        titleImage.setScale(0.75 * scaleFactor)
-        titleImage.position = CGPoint(x: self.frame.width / 2, y: self.frame.height - yOffset)
+        let title = SKLabelNode(fontNamed: "Thonburi")
+        title.fontSize = 35 * scaleFactor
+        title.fontColor = GameTitles.colours[self.level - 1]
+        title.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        title.text = GameTitles.texts[self.level - 1]
+        title.position = CGPoint(x: self.frame.width / 2, y: self.frame.height - yOffset)
         
-        self.addChild(titleImage)
+        self.addChild(title)
     }
     
     func addLevelButtons() {

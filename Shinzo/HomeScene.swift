@@ -54,15 +54,8 @@ class HomeScene: SKScene {
     }
     
     func addButtons() {
-        let texts = ["Peaceful pond", "Babbling brook", "Surging stream", "Raging river", "Stormy sea"]
-        let colours = [SKColor.init(red: 0, green: 255, blue: 100, alpha: 1),
-                       SKColor.init(red: 0, green: 255, blue: 0, alpha: 1),
-                       SKColor.init(red: 255, green: 0, blue: 255, alpha: 1),
-                       SKColor.init(red: 255, green: 255, blue: 0, alpha: 1),
-                       SKColor.init(red: 255, green: 0, blue: 0, alpha: 1)]
-        
-        for i in 0 ..< texts.count {
-            let button = createButtonNumber(i, text: texts[i], name: levelNames[i], colour: colours[i])
+        for i in 0 ..< GameTitles.texts.count {
+            let button = createButtonNumber(i, text: GameTitles.texts[i], name: levelNames[i], colour: GameTitles.colours[i])
             addButtonNumber(i, button: button)
         }
         
