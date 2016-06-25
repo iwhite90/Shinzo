@@ -185,14 +185,17 @@ class SelectGameScene: SKScene {
         let gameStartAction = SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
             let (numColours, numColoursToWin) = self.unpackGameType(self.gameType)
-            let gameStartScene = GameScene(
-                size: self.size,
-                cameFromScene: self,
+            let gameSceneConfig = GameSceneConfig(
+                goBackScene: self,
                 boardConfig: boardConfig,
                 level: self.level,
                 numberOfColours: numColours,
                 numberOfColoursToWin: numColoursToWin,
                 bannerView: self.bannerView)
+            
+            let gameStartScene = GameScene(
+                size: self.size,
+                gameSceneConfig: gameSceneConfig)
             self.view?.presentScene(gameStartScene, transition: reveal)
         }
         

@@ -11,12 +11,8 @@ import GoogleMobileAds
 
 class GameScene: SKScene {
     
-    let previousScene: SKScene!
+    let gameSceneConfig: GameSceneConfig!
     var board: Board!
-    var numberOfColoursToWin: Int!
-    var numberOfColours: Int!
-    var level: Int!
-    var bannerView: GADBannerView!
     var movesLabel = SKLabelNode(fontNamed: "Thonburi")
     var timerLabel = SKLabelNode(fontNamed: "Thonburi")
     var inPlay = true
@@ -57,16 +53,12 @@ class GameScene: SKScene {
         }
     }
     
-    init(size: CGSize, cameFromScene: SKScene, boardConfig: String, level: Int, numberOfColours: Int, numberOfColoursToWin: Int, bannerView: GADBannerView) {
-        previousScene = cameFromScene
+    init(size: CGSize, gameSceneConfig: GameSceneConfig) {
+        self.gameSceneConfig = gameSceneConfig
         super.init(size: size)
-        self.numberOfColoursToWin = numberOfColoursToWin
-        self.numberOfColours = numberOfColours
-        self.level = level
-        self.bannerView = bannerView
-        board = Board(config: boardConfig, numColours: numberOfColours)
+        board = Board(config: gameSceneConfig.boardConfig, numColours: gameSceneConfig.numberOfColours)
         
-        let (threeStars, twoStars, oneStar) = LevelMoves.movesForLevel(level, boardType: board.config)
+        let (threeStars, twoStars, oneStar) = LevelMoves.movesForLevel(gameSceneConfig.level, boardType: board.config)
         self.movesForThreeStars = threeStars
         self.movesForTwoStars = twoStars
         self.movesForOneStar = oneStar
@@ -263,9 +255,9 @@ class GameScene: SKScene {
         let spriteWidth = (board.width / CGFloat(8)) * 0.75
         let spriteYPosition = board.offsetY
         let startX = self.frame.width / 2 - (board.width / CGFloat(8)) * 2
-        let colourNode = Labels.colourOrderNode(spriteWidth, numTiles: self.numberOfColours)
+        let colourNode = Labels.colourOrderNode(spriteWidth, numTiles: self.gameSceneConfig.numberOfColours)
         
-        if self.numberOfColours == 3 {
+        if self.gameSceneConfig.numberOfColours == 3 {
             colourNode.position = CGPoint(x: startX - spriteWidth, y: spriteYPosition - spriteWidth)
         } else {
             colourNode.position = CGPoint(x: startX - spriteWidth * 2.5, y: spriteYPosition - spriteWidth)
@@ -326,7 +318,7 @@ class GameScene: SKScene {
         
         let gameQuitAction = SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-            self.view?.presentScene(self.previousScene, transition: reveal)
+            self.view?.presentScene(self.gameSceneConfig.goBackScene, transition: reveal)
         }
         
         self.runAction(gameQuitAction)
@@ -361,7 +353,7 @@ class GameScene: SKScene {
     }
     
     func checkForEnd() {
-        if board.end(numberOfColoursToWin) {
+        if board.end(gameSceneConfig.numberOfColoursToWin) {
             stopTimer()
             showGameOver()
         }
@@ -380,7 +372,11 @@ class GameScene: SKScene {
         }
         let gameOverAction = SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-            let gameOverScene = GameOverScene(size: self.size, moves: self.moves, time: self.timerValue, boardType: self.board.config, level: self.level, bannerView: self.bannerView)
+            let gameOverScene = GameOverScene(
+                size: self.size,
+                gameSceneConfig: self.gameSceneConfig,
+                moves: self.moves,
+                time: self.timerValue)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
         

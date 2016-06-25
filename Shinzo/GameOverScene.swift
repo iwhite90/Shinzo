@@ -11,24 +11,25 @@ import SpriteKit
 import GoogleMobileAds
 
 class GameOverScene: SKScene {
-    var bannerView: GADBannerView!
+    var gameSceneConfig: GameSceneConfig!
     var newBestMoves = false
     var newBestTime = false
     var newBestStars = false
     
-    init(size: CGSize, moves: Int, time: Double, boardType: String, level: Int, bannerView: GADBannerView) {
+    init(size: CGSize, gameSceneConfig: GameSceneConfig, moves: Int, time: Double) {
+        self.gameSceneConfig = gameSceneConfig
         super.init(size: size)
-        self.bannerView = bannerView
         
         addBackground()
         
-        let numStars = calculateStars(moves, boardType: boardType, level: level)
-        saveScoreFor(boardType, level: level, moves: moves, time: time, stars: numStars)
+        let numStars = calculateStars(moves, boardType: gameSceneConfig.boardConfig, level: gameSceneConfig.level)
+        saveScoreFor(gameSceneConfig.boardConfig, level: gameSceneConfig.level, moves: moves, time: time, stars: numStars)
         
         addStars(numStars)
         addYouWonLabel(numStars)
         addMovesLabel(moves)
-     //   addTimeLabel(time)
+        addControlButtons()
+        //   addTimeLabel(time)
     }
     
     func saveScoreFor(boardType: String, level: Int, moves: Int, time: Double, stars: Int) {
@@ -145,12 +146,53 @@ class GameOverScene: SKScene {
         addChild(label)
     }
     
+    func addControlButtons() {
+        let retryLabel = SKLabelNode(fontNamed: "Thonburi")
+        retryLabel.text = "↻"
+        retryLabel.fontSize = 60
+        retryLabel.name = "retry"
+        retryLabel.position = CGPoint(x: size.width * 0.75, y: size.height / 2 - 100)
+        
+        addChild(retryLabel)
+        
+        let backLabel = SKLabelNode(fontNamed: "Thonburi")
+        backLabel.text = "↞"
+        backLabel.fontSize = 60
+        backLabel.name = "back"
+        backLabel.position = CGPoint(x: size.width / 4, y: size.height / 2 - 100)
+        
+        addChild(backLabel)
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            let location = touch.locationInNode(self)
+            let node = self.nodeAtPoint(location)
+            
+            if let name = node.name {
+                if name == "back" {
+                    goToHomeScreen()
+                } else if name == "retry" {
+                    restartGame()
+                }
+            }
+        }
+    }
+    
+    func goToHomeScreen() {
         runAction(SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
             let scene = HomeScene(size: self.size)
-            scene.bannerView = self.bannerView
+            scene.bannerView = self.gameSceneConfig.bannerView
             self.view?.presentScene(scene, transition:reveal)
+        })
+    }
+    
+    func restartGame() {
+        runAction(SKAction.runBlock() {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let scene = GameScene(size: self.size, gameSceneConfig: self.gameSceneConfig)
+            self.view?.presentScene(scene, transition: reveal)
         })
     }
     

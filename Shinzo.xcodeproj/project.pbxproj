@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C14FF291D1E94CE00438132 /* GameSceneConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C14FF281D1E94CE00438132 /* GameSceneConfig.swift */; };
 		3C4C19A51D0E9DF000F83D18 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C19A41D0E9DF000F83D18 /* Utils.swift */; };
 		3C4C19A71D0F268800F83D18 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C19A61D0F268800F83D18 /* Data.swift */; };
 		3C4C19A91D11B53200F83D18 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4C19A81D11B53200F83D18 /* GoogleMobileAds.framework */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C14FF281D1E94CE00438132 /* GameSceneConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneConfig.swift; sourceTree = "<group>"; };
 		3C4C19A41D0E9DF000F83D18 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		3C4C19A61D0F268800F83D18 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		3C4C19A81D11B53200F83D18 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				3CA87A631CD761B300A78F24 /* SelectGameScene.swift */,
 				3CA87A231CCD299C00A78F24 /* GameScene.swift */,
 				3CA87A551CCD3C6400A78F24 /* GameOverScene.swift */,
+				3C14FF281D1E94CE00438132 /* GameSceneConfig.swift */,
 				3CA87A611CD749EC00A78F24 /* Label.swift */,
 				3CA87A511CCD2B3E00A78F24 /* Tile.swift */,
 				3C4C19A61D0F268800F83D18 /* Data.swift */,
@@ -296,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C14FF291D1E94CE00438132 /* GameSceneConfig.swift in Sources */,
 				3CA87A241CCD299C00A78F24 /* GameScene.swift in Sources */,
 				3CA87A261CCD299C00A78F24 /* GameViewController.swift in Sources */,
 				3CA87A541CCD328300A78F24 /* Random.swift in Sources */,
