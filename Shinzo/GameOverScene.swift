@@ -180,15 +180,16 @@ class GameOverScene: SKScene {
     }
     
     func goToHomeScreen() {
+        Utils.presentIntersitial()
         runAction(SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
             let scene = HomeScene(size: self.size)
-            scene.bannerView = self.gameSceneConfig.bannerView
             self.view?.presentScene(scene, transition:reveal)
         })
     }
     
     func restartGame() {
+        Utils.presentIntersitial()
         runAction(SKAction.runBlock() {
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
             let scene = GameScene(size: self.size, gameSceneConfig: self.gameSceneConfig)

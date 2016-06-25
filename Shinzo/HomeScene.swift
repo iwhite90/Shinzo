@@ -11,7 +11,6 @@ import SpriteKit
 import GoogleMobileAds
 
 class HomeScene: SKScene {
-    var bannerView: GADBannerView!
     var scaleFactor: CGFloat = 1
     
     let levelNames = ["3-2", "4-3", "4-2", "3-1", "4-1"]
@@ -29,7 +28,7 @@ class HomeScene: SKScene {
         addBackground()
         addInteractiveElements()
         addTitle()
-        Utils.showBanner(bannerView, screenHeight: self.frame.height)
+        Utils.showBanner(Ads.bannerView, screenHeight: self.frame.height)
     }
     
     func setScaleFactor() {
@@ -223,7 +222,7 @@ class HomeScene: SKScene {
             if let name = node.name {
                 let gameSelectAction = SKAction.runBlock() {
                     let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                    let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name, level: self.levelFrom(name), bannerView: self.bannerView)
+                    let selectGameScene = SelectGameScene(size: self.size, cameFromScene: self, gameType: name, level: self.levelFrom(name))
                     self.view?.presentScene(selectGameScene, transition: reveal)
                 }
                 self.runAction(gameSelectAction)

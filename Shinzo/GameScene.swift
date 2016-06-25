@@ -73,6 +73,7 @@ class GameScene: SKScene {
         addBackground()
         setupBoard()
         addTopBar()
+        Utils.createAndLoadInterstitial()
     }
     
     func setScaleFactor() {

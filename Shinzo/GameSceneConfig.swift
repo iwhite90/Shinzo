@@ -16,5 +16,4 @@ struct GameSceneConfig {
     var level: Int!
     var numberOfColours: Int!
     var numberOfColoursToWin: Int!
-    var bannerView: GADBannerView!
 }

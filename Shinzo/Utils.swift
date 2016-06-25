@@ -17,7 +17,7 @@ class Utils {
     static func showBanner(bannerView: GADBannerView, screenHeight: CGFloat) {
         bannerView.hidden = false
         let request = GADRequest()
-        request.testDevices = ["2fe890f315d2ba56207ad407abaf630c"]
+        request.testDevices = [ kGADSimulatorID, "2fe890f315d2ba56207ad407abaf630c"]
         bannerView.loadRequest(request)
         var bannerFrame = bannerView.frame
         bannerFrame.origin.x = 0
@@ -35,4 +35,28 @@ class Utils {
             bannerView.hidden = false
         }
     }
+    
+    static func createAndLoadInterstitial() {
+        //Ads.interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910")// test ad
+        Ads.interstitial = GADInterstitial(adUnitID: "ca-app-pub-2729774462696402/4745573771") // live ad
+        if Ads.gamesToShowInterstitial == 0 {
+            Ads.gamesToShowInterstitial = Int(Random.random(min: 2, max: 5))
+            let request = GADRequest()
+            request.testDevices = [ kGADSimulatorID, "2fe890f315d2ba56207ad407abaf630c" ]
+            Ads.interstitial.loadRequest(request)
+            print(Ads.gamesToShowInterstitial)
+        } else {
+            Ads.gamesToShowInterstitial -= 1
+            print(Ads.gamesToShowInterstitial)
+        }
+    }
+    
+    static func presentIntersitial() {
+        if Ads.interstitial.isReady {
+            Ads.interstitial.presentFromRootViewController(Ads.rootVC)
+        } else {
+            print("Ad wasn't ready")
+        }
+    }
+
 }

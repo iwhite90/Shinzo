@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C14FF291D1E94CE00438132 /* GameSceneConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C14FF281D1E94CE00438132 /* GameSceneConfig.swift */; };
+		3C14FF2B1D1EBA7600438132 /* Ads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C14FF2A1D1EBA7600438132 /* Ads.swift */; };
 		3C4C19A51D0E9DF000F83D18 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C19A41D0E9DF000F83D18 /* Utils.swift */; };
 		3C4C19A71D0F268800F83D18 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4C19A61D0F268800F83D18 /* Data.swift */; };
 		3C4C19A91D11B53200F83D18 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4C19A81D11B53200F83D18 /* GoogleMobileAds.framework */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		3C14FF281D1E94CE00438132 /* GameSceneConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneConfig.swift; sourceTree = "<group>"; };
+		3C14FF2A1D1EBA7600438132 /* Ads.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ads.swift; sourceTree = "<group>"; };
 		3C4C19A41D0E9DF000F83D18 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		3C4C19A61D0F268800F83D18 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		3C4C19A81D11B53200F83D18 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				3CA87A5B1CCFBFCB00A78F24 /* Board.swift */,
+				3C14FF2A1D1EBA7600438132 /* Ads.swift */,
 				3CF04DA91D1C70DD002E20C4 /* LevelMoves.swift */,
 				3CA87A1F1CCD299C00A78F24 /* AppDelegate.swift */,
 				3CA87A251CCD299C00A78F24 /* GameViewController.swift */,
@@ -302,6 +305,7 @@
 				3C14FF291D1E94CE00438132 /* GameSceneConfig.swift in Sources */,
 				3CA87A241CCD299C00A78F24 /* GameScene.swift in Sources */,
 				3CA87A261CCD299C00A78F24 /* GameViewController.swift in Sources */,
+				3C14FF2B1D1EBA7600438132 /* Ads.swift in Sources */,
 				3CA87A541CCD328300A78F24 /* Random.swift in Sources */,
 				3CA87A581CCF767100A78F24 /* HomeScene.swift in Sources */,
 				3CA87A641CD761B300A78F24 /* SelectGameScene.swift in Sources */,

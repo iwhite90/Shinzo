@@ -15,7 +15,6 @@ class SelectGameScene: SKScene {
     let previousScene: SKScene!
     var gameType: String!
     var level: Int!
-    var bannerView: GADBannerView!
     var scaleFactor: CGFloat = 1
     
     var yOffset: CGFloat {
@@ -30,12 +29,11 @@ class SelectGameScene: SKScene {
         return size.height / 2
     }
     
-    init(size: CGSize, cameFromScene: SKScene, gameType: String, level: Int, bannerView: GADBannerView) {
+    init(size: CGSize, cameFromScene: SKScene, gameType: String, level: Int) {
         previousScene = cameFromScene
         super.init(size: size)
         self.gameType = gameType
         self.level = level
-        self.bannerView = bannerView
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -48,7 +46,7 @@ class SelectGameScene: SKScene {
         addTopBar()
         addTitle()
         addLevelButtons()
-        Utils.showBannerIfHidden(bannerView)
+        Utils.showBannerIfHidden(Ads.bannerView)
     }
     
     func setScaleFactor() {
@@ -190,8 +188,7 @@ class SelectGameScene: SKScene {
                 boardConfig: boardConfig,
                 level: self.level,
                 numberOfColours: numColours,
-                numberOfColoursToWin: numColoursToWin,
-                bannerView: self.bannerView)
+                numberOfColoursToWin: numColoursToWin)
             
             let gameStartScene = GameScene(
                 size: self.size,
@@ -199,7 +196,7 @@ class SelectGameScene: SKScene {
             self.view?.presentScene(gameStartScene, transition: reveal)
         }
         
-        Utils.hideBanner(bannerView)
+        Utils.hideBanner(Ads.bannerView)
         self.runAction(gameStartAction)
     }
     
