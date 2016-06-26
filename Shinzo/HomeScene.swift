@@ -12,11 +12,13 @@ import GoogleMobileAds
 
 class HomeScene: SKScene {
     var scaleFactor: CGFloat = 1
+    var levelThreeStars = [0, 0, 0, 0, 0, 0]
+    var showBonusLevel = false
     
-    let levelNames = ["3-2", "4-3", "4-2", "3-1", "4-1"]
+    let levelNames = ["3-2", "4-3", "4-2", "5-4", "5-3", "5-2"]
     
     var buttonYOffset: CGFloat {
-        return self.frame.height / 7
+        return self.frame.height / 9
     }
     
     var titleTileWidth: CGFloat {
@@ -25,6 +27,7 @@ class HomeScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         setScaleFactor()
+        setUpNumberOfThreeStarsForLevels()
         addBackground()
         addInteractiveElements()
         addTitle()
@@ -38,6 +41,20 @@ class HomeScene: SKScene {
         }
     }
 
+    func setUpNumberOfThreeStarsForLevels() {
+        for i in 0 ..< 6 {
+            levelThreeStars[i] = numberOfThreeStarsForLevel(i + 1)
+        }
+        var completedLevels = 0
+        for i in 0 ..< levelThreeStars.count {
+            if levelThreeStars[i] == 9 {
+                completedLevels += 1
+            }
+        }
+        if completedLevels >= 5 {
+            showBonusLevel = true
+        }
+    }
     
     func addBackground() {
         backgroundColor = SKColor.lightGrayColor()
@@ -50,15 +67,21 @@ class HomeScene: SKScene {
     
     func addInteractiveElements() {
         addButtons()
-        addLabels(5)
+        addLabels(6)
     }
     
     func addButtons() {
         for i in 0 ..< GameTitles.texts.count {
-            let button = createButtonNumber(i, text: GameTitles.texts[i], name: levelNames[i], colour: GameTitles.colours[i])
-            addButtonNumber(i, button: button)
+            if i == GameTitles.texts.count - 1 {
+                if showBonusLevel {
+                    let button = createButtonNumber(i, text: GameTitles.texts[i], name: levelNames[i], colour: GameTitles.colours[i])
+                    addButtonNumber(i, button: button)
+                }
+            } else {
+                let button = createButtonNumber(i, text: GameTitles.texts[i], name: levelNames[i], colour: GameTitles.colours[i])
+                addButtonNumber(i, button: button)
+            }
         }
-        
     }
     
     func createButtonNumber(buttonNumber: Int, text: String, name: String, colour: SKColor) -> SKLabelNode {
@@ -73,15 +96,22 @@ class HomeScene: SKScene {
     }
     
     func addButtonNumber(buttonNumber: Int, button: SKLabelNode) {
-        button.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - buttonYOffset * CGFloat(2 + buttonNumber))
+        button.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - (150 * scaleFactor) - buttonYOffset * CGFloat(buttonNumber))
         
         self.addChild(button)
     }
     
     func addLabels(numLabels: Int) {
         for i in 0 ..< numLabels {
-            let label = createLabel(i + 1)
-            addLabelNumber(i, label: label)
+            if i == numLabels - 1 {
+                if showBonusLevel {
+                    let label = createLabel(i + 1)
+                    addLabelNumber(i, label: label)
+                }
+            } else {
+                let label = createLabel(i + 1)
+                addLabelNumber(i, label: label)
+            }
         }
     }
     
@@ -91,7 +121,7 @@ class HomeScene: SKScene {
         label.fontColor = SKColor.grayColor()
         label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Right
         
-        let score = numberOfThreeStarsForLevel(level)
+        let score = levelThreeStars[level - 1]
         if score > 0 {
             label.fontColor = SKColor.yellowColor()
         }
@@ -127,7 +157,7 @@ class HomeScene: SKScene {
     }
     
     func addLabelNumber(labelNumber: Int, label: SKLabelNode) {
-        label.position = CGPoint(x: self.frame.width - 40 * scaleFactor, y: self.frame.height - buttonYOffset * CGFloat(2 + labelNumber))
+        label.position = CGPoint(x: self.frame.width - 40 * scaleFactor, y: self.frame.height - (150 * scaleFactor) - buttonYOffset * CGFloat(labelNumber))
         self.addChild(label)
     }
     
@@ -247,7 +277,7 @@ class HomeScene: SKScene {
     
     func displayCoachMark() {
         let alertController = UIAlertController(title: "Select a game",
-                                                message: "Lower games are harder.\n\nFor instance, Peaceful pond has a board with 3 colours which you need to get down to 2.\n\nStormy sea starts with 4 colours which you need to get down to just 1!",
+                                                message: "Lower games are harder.\n\nFor instance, Peaceful pond has a board with 3 colours which you need to get down to 2.\n\nStormy sea starts with 5 colours which you need to get down to 3.",
                                                 preferredStyle: .Alert)
             
         let okAction = UIAlertAction(title:"Ok",

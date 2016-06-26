@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 struct Tiles {
-    static let images = ["tile_yellow", "tile_purple", "tile_green", "tile_blue"]
+    static let images = ["tile_yellow", "tile_purple", "tile_green", "tile_blue", "tile_red"]
 }
 
 class Tile: SKSpriteNode {

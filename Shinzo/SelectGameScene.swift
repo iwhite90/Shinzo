@@ -223,6 +223,9 @@ class SelectGameScene: SKScene {
             case "4-3": result = (4, 3)
             case "4-2": result = (4, 2)
             case "4-1": result = (4, 1)
+            case "5-4": result = (5, 4)
+            case "5-3": result = (5, 3)
+            case "5-2": result = (5, 2)
             default: result = (3, 2)
         }
         

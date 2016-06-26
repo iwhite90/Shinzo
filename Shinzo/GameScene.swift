@@ -262,8 +262,10 @@ class GameScene: SKScene {
         
         if self.gameSceneConfig.numberOfColours == 3 {
             colourNode.position = CGPoint(x: startX - spriteWidth, y: spriteYPosition - spriteWidth)
-        } else {
+        } else if self.gameSceneConfig.numberOfColours == 4 {
             colourNode.position = CGPoint(x: startX - spriteWidth * 2.5, y: spriteYPosition - spriteWidth)
+        } else {
+            colourNode.position = CGPoint(x: startX - spriteWidth * 4, y: spriteYPosition - spriteWidth)
         }
         colourNode.zPosition = 0
         
