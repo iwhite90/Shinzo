@@ -96,7 +96,7 @@ class HomeScene: SKScene {
     }
     
     func addButtonNumber(buttonNumber: Int, button: SKLabelNode) {
-        button.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - (150 * scaleFactor) - buttonYOffset * CGFloat(buttonNumber))
+        button.position = CGPoint(x: 20 * scaleFactor, y: self.frame.height - (150 * (scaleFactor * 1.2)) - buttonYOffset * CGFloat(buttonNumber))
         
         self.addChild(button)
     }
@@ -157,7 +157,7 @@ class HomeScene: SKScene {
     }
     
     func addLabelNumber(labelNumber: Int, label: SKLabelNode) {
-        label.position = CGPoint(x: self.frame.width - 40 * scaleFactor, y: self.frame.height - (150 * scaleFactor) - buttonYOffset * CGFloat(labelNumber))
+        label.position = CGPoint(x: self.frame.width - 40 * scaleFactor, y: self.frame.height - (150 * (scaleFactor * 1.2)) - buttonYOffset * CGFloat(labelNumber))
         self.addChild(label)
     }
     

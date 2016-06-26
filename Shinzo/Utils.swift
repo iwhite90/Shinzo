@@ -21,7 +21,7 @@ class Utils {
     }
     
     static func showBanner(bannerView: GADBannerView, screenHeight: CGFloat) {
-        bannerView.hidden = false
+    //    bannerView.hidden = false
         let request = GADRequest()
         request.testDevices = [ kGADSimulatorID, "2fe890f315d2ba56207ad407abaf630c"]
         bannerView.loadRequest(request)
@@ -38,7 +38,7 @@ class Utils {
     
     static func showBannerIfHidden(bannerView: GADBannerView) {
         if bannerView.hidden {
-            bannerView.hidden = false
+   //         bannerView.hidden = false
         }
     }
     
